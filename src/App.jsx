@@ -16,7 +16,20 @@ const App = () => {
   ];
 
    const[visible , setVisible] = useState(true);
-   const [Disabled, setDisabled] = useState(false);
+  //  const [Disabled, setDisabled] = useState(false);
+  const [button1Disabled, setButton1Disabled] = useState(false);
+  const [button2Disabled, setButton2Disabled] = useState(true);
+
+  const handleButtonClick = (buttonNumber) => {
+    if (buttonNumber === 1) {
+      setButton1Disabled(true);
+      setButton2Disabled(false);
+    } else if (buttonNumber === 2) {
+      setButton1Disabled(false);
+      setButton2Disabled(true);
+    }
+  };
+
    const [inputValue, setInputValue] = useState('');
   
     
@@ -25,17 +38,32 @@ const App = () => {
     };
   
   
-   const [child, setChild] = useState([]);
-   const [first, setFirst] = useState(0);
-   const [second, setSecond] = useState(0);
-   const [sum, setSum] = useState(0);
+  //  const [child, setChild] = useState([]);
+   const [first, setFirst] = useState("");
+   const [second, setSecond] = useState("");
+   const [sum, setSum] = useState("");
 
 
-  const addChild = () => {
-    setChild(prev => [...prev,
-      <div key={prev.length}>kishan{prev.length + 1}</div>
-    ]);
+  // const addChild = () => {
+  //   setChild(prev => [...prev,
+  //     <div key={prev.length}>kishan{prev.length + 1}</div>
+  //   ]);
+  // };
+
+  // task six
+  const [values, setValues] = useState([]);
+  const addChild = (value) => {
+    // Check if the value already exists in the array
+    if (!values.includes(value)) {
+      setValues(prevValues => [...prevValues, value]);
+    }
   };
+
+  const handleValueClick = (index) => {
+    addChild(`Child of ${values}`);
+  };
+
+
 
   const calculateSum = () => {
     setSum(first+second);
@@ -48,13 +76,12 @@ const [counter, setCounter] = useState(0);
   const handleCounterChange = (e) => {
     if (e === 'increment') {
       setCounter(counter + 1);
-    } else if (e === 'decrement' && counter > 0) {
+    } else if (e === 'decrement' ) {
       setCounter(counter - 1);
     }
   };
 
    const [searchTerm, setSearchTerm] = useState('');
-
   const [data, setData] = useState([
     { id: 1, name: 'Apple' },
     { id: 2, name: 'Banana' },
@@ -88,11 +115,13 @@ const [counter, setCounter] = useState(0);
       {visible && <p>I am here</p>}
       <button className='magic' onClick={()=>setVisible(perv =>!perv)}>Magic</button><br/>
       
-          {/* Task fourth */}
-      <button className='magic' disabled={Disabled}>Enable/disable</button>
-      <button onClick={() => setDisabled(prev => !prev)}>
-         Button
-      </button><br/>
+       {/* Task fourth */}  
+     <div>
+      <button className='magic' disabled={button1Disabled} onClick={() => handleButtonClick(1)}>Enable</button>
+      <button disabled={button2Disabled} onClick={() => handleButtonClick(2)}>Disabled</button>
+    </div>
+
+    
 
 
           {/* Task fifth */}
@@ -105,14 +134,25 @@ const [counter, setCounter] = useState(0);
 
 
           {/* Task six */}
-      <div>
-        <button className='magic' onClick={addChild}>add</button>
-        {child}
-      </div>
+          <div>
+      <input type="text" placeholder="Enter value" onKeyPress={(e) => {
+        if (e.key === "Enter") {
+          addChild(e.target.value);
+          e.target.value = "";
+        }
+      }} />
+      <br />
+      {values.map((value, index) => (
+        <div key={index} onClick={() => handleValueClick(index)}>
+          {value}
+        </div>
+      ))}
+    </div><br/>
 
       {/* Task seven */}
       <div>
       <input type="number" value={first} onChange={e => setFirst(Number(e.target.value))} />
+      +
         <input type="number"value={second}onChange={e => setSecond(Number(e.target.value))}/>
         <button onClick={calculateSum}>Calculate Sum</button>
         <p>Sum: {sum}</p>
