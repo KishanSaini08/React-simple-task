@@ -3,7 +3,7 @@
 import React, { useState } from 'react'
 import "./App.css"
 
-const App = () => {
+const App = ({name}) => {
 
   const text= <h1>Basic react jsx</h1>;
   <br/>
@@ -38,30 +38,34 @@ const App = () => {
     };
   
   
-  //  const [child, setChild] = useState([]);
+ 
    const [first, setFirst] = useState("");
    const [second, setSecond] = useState("");
    const [sum, setSum] = useState("");
 
 
-  // const addChild = () => {
-  //   setChild(prev => [...prev,
-  //     <div key={prev.length}>kishan{prev.length + 1}</div>
-  //   ]);
-  // };
+  
 
   // task six
-  const [values, setValues] = useState([]);
-  const addChild = (value) => {
-    // Check if the value already exists in the array
-    if (!values.includes(value)) {
-      setValues(prevValues => [...prevValues, value]);
-    }
+  const [inputVal, setInputVal] = useState('');
+  const [childs, setChilds] = useState([]);
+
+  const handleInpChange = (e) => {
+    setInputVal(e.target.value);
   };
 
-  const handleValueClick = (index) => {
-    addChild(`Child of ${values}`);
+  const handleInpSubmit = () => {
+    setChilds([...childs, inputVal]);
+    setInputVal('');
   };
+
+  const handleChildClick = (index) => {
+    const newChild = `${childs[index]}`;
+    const newChilds = [...childs];
+    newChilds.splice(index + 1, 0, newChild);
+    setChilds(newChilds);
+  };
+
 
 
 
@@ -135,19 +139,23 @@ const [counter, setCounter] = useState(0);
 
           {/* Task six */}
           <div>
-            <h4>child</h4>
-      <input type="text" placeholder="Enter value" onKeyPress={(e) => {
-        if (e.key === "Enter") {
-          addChild(e.target.value);
-          e.target.value = "";
-        }
-      }} />
-      <br />
-      {values.map((value, index) => (
-        <div key={index} onClick={() => handleValueClick(index)}>
-          {value}
-        </div>
-      ))}
+          <input
+        type="text"
+        value={inputVal}
+        onChange={handleInpChange}
+        placeholder="Enter value"
+      />
+      <button onClick={handleInpSubmit}>Add</button>
+      
+      <ul>
+        {childs.map((child, index) => (
+          <li key={index} onClick={() => handleChildClick(index)}>
+            {child}
+          </li>
+        ))}
+      </ul>
+
+    
     </div><br/>
 
       {/* Task seven */}
